@@ -55,11 +55,7 @@ export function Step4Review({ data, onBack, onSend }: Step4ReviewProps) {
                         title={sticker.source === 'ai' ? 'AI-generated sticker' : 'Sticker'}
                       >
                         {sticker.emoji}
-                        {sticker.source === 'ai' && (
-                          <span className="ml-1 text-[9px] uppercase tracking-wide text-[#3ea7c1]">
-                            AI
-                          </span>
-                        )}
+                        
                       </span>
                     ))}
                   </div>

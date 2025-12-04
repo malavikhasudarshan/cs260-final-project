@@ -2,50 +2,57 @@ import React, { useState } from 'react';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import type { LetterData, StickerSource } from '../../types/letter';
 
-function getAISuggestedStickers(message: string): string[] {
-  const text = message.toLowerCase();
-  const suggestions = new Set<string>();
 
-  suggestions.add('💌');
-  suggestions.add('💖');
-  suggestions.add('🌟');
+const OPENAI_API_KEY = ""; // your key here 
 
-  if (text.includes('birthday') || text.includes('bday')) {
-    suggestions.add('🎂');
-    suggestions.add('🎁');
-    suggestions.add('🎉');
+async function getAISuggestedStickers(message: string): Promise<string[]> {
+  const response = await fetch("https://api.openai.com/v1/chat/completions", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${OPENAI_API_KEY}`,
+    },
+    body: JSON.stringify({
+      model: "gpt-4.1-mini", // or "gpt-4o-mini" / whatever you have access to
+      messages: [
+        {
+          role: "system",
+          content:
+            "You are an emoji sticker picker for a kids' letter-writing app. " +
+            "Given the letter text, respond ONLY with 3–8 emoji that match the tone and content, " +
+            "separated by spaces. No words, no explanations.",
+        },
+        {
+          role: "user",
+          content: message,
+        },
+      ],
+      max_tokens: 32,
+      temperature: 0.7,
+    }),
+  });
+
+  if (!response.ok) {
+    // 🔥 This will tell you exactly *why* it's failing
+    const errorText = await response.text();
+    console.error("OpenAI error status:", response.status, errorText);
+    throw new Error("OpenAI request failed");
   }
 
-  if (text.includes('congrats') || text.includes('congratulations') || text.includes('proud')) {
-    suggestions.add('🏆');
-    suggestions.add('🎓');
-  }
+  const data = await response.json();
+  // Chat completions shape: data.choices[0].message.content
+  const rawText: string = data.choices?.[0]?.message?.content ?? "";
 
-  if (text.includes('love') || text.includes('miss you') || text.includes('hug')) {
-    suggestions.add('💕');
-    suggestions.add('🥰');
-  }
+  console.log("OpenAI rawText:", rawText);
 
-  if (text.includes('holiday') || text.includes('christmas') || text.includes('new year')) {
-    suggestions.add('🎄');
-    suggestions.add('✨');
-  }
+  const stickers = rawText
+    .split(/[\s,]+/)
+    .map((s: string) => s.trim())
+    .filter(Boolean);
 
-  if (text.trim().length < 10) {
-    suggestions.add('🌈');
-    suggestions.add('🐻');
-  }
-
-  return Array.from(suggestions);
+  return Array.from(new Set(stickers));
 }
 
-type Step3StickersProps = {
-  data: LetterData;
-  onAddSticker: (emoji: string, source: StickerSource) => void;
-  onRemoveSticker: (id: number) => void;
-  onNext: () => void;
-  onBack: () => void;
-};
 
 export function Step3Stickers({
   data,
@@ -60,11 +67,18 @@ export function Step3Stickers({
   const [aiStickers, setAiStickers] = useState<string[]>([]);
   const [isGenerating, setIsGenerating] = useState(false);
 
-  const handleGenerateAI = () => {
-    setIsGenerating(true);
-    const suggestions = getAISuggestedStickers(data.message);
-    setAiStickers(suggestions);
-    setIsGenerating(false);
+  const handleGenerateAI = async () => {
+    try {
+      setIsGenerating(true);
+      const suggestions = await getAISuggestedStickers(data.message);
+      setAiStickers(suggestions);
+    } catch (err) {
+      console.error(err);
+      // fallback if OpenAI dies
+      setAiStickers(["💌", "💕", "🌈"]);
+    } finally {
+      setIsGenerating(false);
+    }
   };
 
   return (
@@ -146,9 +160,7 @@ export function Step3Stickers({
                     title="AI-generated sticker"
                   >
                     {emoji}
-                    <span className="absolute -top-1 -right-1 bg-[#3ea7c1] text-white text-[9px] px-1 py-[1px] rounded-full uppercase tracking-wide">
-                      AI
-                    </span>
+                    
                   </button>
                 ))}
               </div>
@@ -172,18 +184,13 @@ export function Step3Stickers({
                     type="button"
                     onClick={() => onRemoveSticker(sticker.id)}
                     className="px-3 py-1 rounded-full bg-[#f5fdff] border border-[#9ac7d3] text-2xl hover:bg-[#e2f6fb] flex items-center gap-1"
-                    title={
-                      sticker.source === 'ai'
-                        ? 'Remove AI-generated sticker'
-                        : 'Remove sticker'
-                    }
+                    
+                  
                   >
                     {sticker.emoji}
-                    {sticker.source === 'ai' && (
-                      <span className="text-[9px] uppercase tracking-wide text-[#3ea7c1] ml-1">
-                        AI
-                      </span>
-                    )}
+                    
+                      
+                    
                   </button>
                 ))}
               </div>
