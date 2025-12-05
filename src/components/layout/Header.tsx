@@ -17,9 +17,12 @@ function ProgressBar({ currentStep }: { currentStep: number }) {
         className="absolute inset-y-1/2 left-0 -translate-y-1/2 rounded-full bg-[#9ac7d3] transition-all duration-300"
         style={{ width: `${progress}%` }}
       />
+      {/* Step label removed */}
+      {/*
       <p className="absolute left-0 top-0 text-sm font-normal text-[#528998]">
         Step {clampedStep}:
       </p>
+      */}
     </div>
   );
 }
