@@ -49,6 +49,14 @@ const FONT_SIZE_OPTIONS = [
   { id: 'xlarge', label: 'Extra Large', px: 26 },
 ];
 
+// 🎨 Font color options (you can tweak these)
+const FONT_COLOR_OPTIONS = [
+  { id: 'ink', label: 'Ink', value: '#27263e' },
+  { id: 'sea', label: 'Sea', value: '#3ea7c1' },
+  { id: 'berry', label: 'Berry', value: '#d4183d' },
+  { id: 'sun', label: 'Sun', value: '#f4a623' },
+];
+
 async function getAISuggestedStickers(message: string): Promise<string[]> {
   if (!OPENAI_API_KEY) {
     console.warn('Missing OpenAI API key – returning fallback stickers');
@@ -127,6 +135,7 @@ export function Step2WriteAndStickers({
   const [isGenerating, setIsGenerating] = useState(false);
   const [fontId, setFontId] = useState<string>('chivo');
   const [fontSizeId, setFontSizeId] = useState<string>('normal');
+  const [fontColor, setFontColor] = useState<string>('#27263e'); // 🎨 NEW
 
   const letterRef = useRef<HTMLDivElement | null>(null);
   const resizeHandleRef = useRef<boolean | null>(null);
@@ -317,7 +326,7 @@ export function Step2WriteAndStickers({
               </p>
             </div>
 
-            {/* Font + size selector */}
+            {/* Font + size + color selector */}
             <div className="mb-3 flex flex-wrap items-center gap-4">
               <div className="flex items-center gap-2">
                 <label className="font-['Chivo',sans-serif] text-[14px] text-[#27263e]">
@@ -356,6 +365,35 @@ export function Step2WriteAndStickers({
                   ))}
                 </select>
               </div>
+
+              {/* 🎨 Color selector */}
+              <div className="flex items-center gap-2">
+                <label className="font-['Chivo',sans-serif] text-[14px] text-[#27263e]">
+                  Color:
+                </label>
+                <div className="flex items-center gap-2">
+                  {FONT_COLOR_OPTIONS.map(color => (
+                    <button
+                      key={color.id}
+                      type="button"
+                      onClick={() => setFontColor(color.value)}
+                      className={`w-6 h-6 rounded-full border-2 transition-transform ${
+                        fontColor === color.value
+                          ? 'border-[#27263e] scale-110'
+                          : 'border-transparent'
+                      }`}
+                      style={{ backgroundColor: color.value }}
+                    />
+                  ))}
+                  {/* Custom color input */}
+                  <input
+                    type="color"
+                    value={fontColor}
+                    onChange={e => setFontColor(e.target.value)}
+                    className="w-8 h-8 border border-[#9ac7d3] rounded-full p-0 cursor-pointer"
+                  />
+                </div>
+              </div>
             </div>
 
             {/* Single fixed-size letter box */}
@@ -381,7 +419,7 @@ export function Step2WriteAndStickers({
                 <textarea
                   value={data.message}
                   onChange={e => onUpdate({ message: e.target.value })}
-                  className="absolute inset-0 w-full h-full border-none outline-none bg-transparent text-[#27263e] leading-[1.75] resize-none z-[5]"
+                  className="absolute inset-0 w-full h-full border-none outline-none bg-transparent leading-[1.75] resize-none z-[5]"
                   style={{
                     fontFamily: currentFontFamily,
                     fontSize: `${currentFontSize}px`,
@@ -389,6 +427,7 @@ export function Step2WriteAndStickers({
                     paddingRight: `${TEXT_PADDING_RIGHT}px`,
                     paddingTop: `${TEXT_PADDING_TOP}px`,
                     paddingBottom: `${TEXT_PADDING_BOTTOM}px`,
+                    color: fontColor, // 🎨 apply chosen color
                   }}
                   placeholder="Write your heartfelt message here..."
                 />
