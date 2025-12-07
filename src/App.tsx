@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Header } from './components/layout/Header';
 import { WelcomeScreen } from './components/steps/WelcomeScreen';
 import { Step1Recipient } from './components/steps/Step1Recipient';
-import { Step2WriteAndStickers } from './components/steps/Step2WriteAndStickers';
+import { Step2WriteAndStickers } from './components/steps/Step3WriteAndStickers';
 import { Step4Review } from './components/steps/Step4Review';
 import { SuccessScreen } from './components/steps/SuccessScreen';
 import type { LetterData, StickerSource } from './types/letter';

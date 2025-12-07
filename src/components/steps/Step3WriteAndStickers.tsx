@@ -19,6 +19,7 @@ type LocalSticker = {
   x: number;
   y: number;
   size: number;
+  source: 'preset' | 'ai';
 };
 
 // Fixed size letter box
@@ -129,13 +130,44 @@ export function Step2WriteAndStickers({
   onNext,
   onBack,
 }: CombinedStepProps) {
-  const [stickers, setStickers] = useState<LocalSticker[]>([]);
+  // Initialize stickers from data if they exist (when user goes back)
+  const initializeStickers = (): LocalSticker[] => {
+    if (data.stickers && data.stickers.length > 0) {
+      return data.stickers.map(sticker => ({
+        id: sticker.id,
+        emoji: sticker.emoji,
+        x: sticker.x,
+        y: sticker.y,
+        size: sticker.size,
+        source: sticker.source,
+      }));
+    }
+    return [];
+  };
+
+  const [stickers, setStickers] = useState<LocalSticker[]>(initializeStickers);
   const [selectedStickerId, setSelectedStickerId] = useState<number | null>(null);
   const [aiStickers, setAiStickers] = useState<string[]>([]);
   const [isGenerating, setIsGenerating] = useState(false);
   const [fontId, setFontId] = useState<string>('chivo');
   const [fontSizeId, setFontSizeId] = useState<string>('normal');
   const [fontColor, setFontColor] = useState<string>('#27263e'); // 🎨 NEW
+
+  // Save stickers when moving to next step
+  const handleNext = () => {
+    // Convert LocalSticker[] to Sticker[] format and save to data
+    const stickersToSave = stickers.map(sticker => ({
+      id: sticker.id,
+      emoji: sticker.emoji,
+      source: sticker.source,
+      x: sticker.x,
+      y: sticker.y,
+      size: sticker.size,
+    }));
+    
+    onUpdate({ stickers: stickersToSave });
+    onNext();
+  };
 
   const letterRef = useRef<HTMLDivElement | null>(null);
   const resizeHandleRef = useRef<boolean | null>(null);
@@ -166,9 +198,11 @@ export function Step2WriteAndStickers({
   const handleStickerDragStart = (
     e: React.DragEvent<HTMLDivElement>,
     emoji: string,
+    source: 'preset' | 'ai' = 'preset',
   ) => {
     e.dataTransfer.effectAllowed = 'copy';
     e.dataTransfer.setData('emoji', emoji);
+    e.dataTransfer.setData('source', source);
   };
 
   const handleLetterDragOver = (e: React.DragEvent<HTMLDivElement>) => {
@@ -179,6 +213,7 @@ export function Step2WriteAndStickers({
   const handleLetterDrop = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     const emoji = e.dataTransfer.getData('emoji');
+    const source = (e.dataTransfer.getData('source') || 'preset') as 'preset' | 'ai';
     if (!emoji || !letterRef.current) return;
 
     const rect = letterRef.current.getBoundingClientRect();
@@ -197,6 +232,7 @@ export function Step2WriteAndStickers({
       x: adjusted.x,
       y: adjusted.y,
       size,
+      source,
     };
 
     setStickers(prev => [...prev, newSticker]);
@@ -522,7 +558,7 @@ export function Step2WriteAndStickers({
                     <div
                       key={emoji}
                       draggable
-                      onDragStart={e => handleStickerDragStart(e, emoji)}
+                      onDragStart={e => handleStickerDragStart(e, emoji, 'preset')}
                       className="w-full aspect-square flex items-center justify-center text-[48px] rounded-[14px] border-2 border-[#9ac7d3] bg-[#f5fdff] cursor-pointer transition-all duration-300 hover:bg-[#ddf7fe] hover:scale-105"
                       style={{ userSelect: 'none' }}
                     >
@@ -558,7 +594,7 @@ export function Step2WriteAndStickers({
                       <div
                         key={`${emoji}-${idx}`}
                         draggable
-                        onDragStart={e => handleStickerDragStart(e, emoji)}
+                        onDragStart={e => handleStickerDragStart(e, emoji, 'ai')}
                         className="w-full aspect-square flex items-center justify-center text-[48px] rounded-[14px] border-2 border-[#3ea7c3] bg-[#f5fdff] cursor-pointer transition-all duration-300 hover:bg-[#ddf7fe] hover:scale-105"
                         style={{ userSelect: 'none', borderStyle: 'dashed' }}
                       >
@@ -594,7 +630,7 @@ export function Step2WriteAndStickers({
         </button>
 
         <button
-          onClick={onNext}
+          onClick={handleNext}
           disabled={!isValid}
           className="bg-[#3ea7c1] text-white px-8 py-3 rounded-[8px] font-['Chivo',sans-serif] text-[18px] flex items-center gap-2 transition-colors hover:bg-[#3598ab] disabled:bg-gray-300 disabled:cursor-not-allowed shadow-md"
         >
