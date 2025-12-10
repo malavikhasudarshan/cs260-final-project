@@ -4,6 +4,16 @@
   background: lightblue;
 }
 
+/* Ensure Google Fonts are applied - these rules catch all variations of the font classes */
+[class*="Instrument Serif"],
+[class*="Instrument_Serif"] {
+  font-family: 'Instrument Serif', serif !important;
+}
+
+[class*="Chivo"]:not([class*="Chivo:"]) {
+  font-family: 'Chivo', sans-serif !important;
+}
+
 @layer properties {
   @supports (((-webkit-hyphens: none)) and (not (margin-trim: inline))) or ((-moz-orient: inline) and (not (color: rgb(from red r g b)))) {
     *, :before, :after, ::backdrop {
@@ -694,11 +704,19 @@
   }
 
   .font-\[\'Chivo\:Regular\'\,sans-serif\] {
-    font-family: Chivo\:Regular, sans-serif;
+    font-family: 'Chivo', sans-serif;
   }
 
   .font-\[\'Instrument_Serif\:Regular\'\,sans-serif\] {
-    font-family: Instrument Serif\:Regular, sans-serif;
+    font-family: 'Instrument Serif', serif;
+  }
+
+  .font-\[\'Chivo\'\,sans-serif\] {
+    font-family: 'Chivo', sans-serif;
+  }
+
+  .font-\[\'Instrument Serif\'\,serif\] {
+    font-family: 'Instrument Serif', serif;
   }
 
   .text-\[14px\] {

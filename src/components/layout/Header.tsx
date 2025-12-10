@@ -35,7 +35,7 @@ type HeaderProps = {
 export function Header({ currentStep, showProgress }: HeaderProps) {
   return (
     <header className="w-full bg-[#ddf7fe] px-6 py-4 flex h-20 items-center justify-between">
-      <p className="font-['Instrument_Serif',serif] text-[28px] leading-none text-[#27263e]">
+      <p className="font-['Instrument Serif',serif] text-[28px] leading-none text-[#27263e]">
         Wish<span className="text-[#787878]">Mail</span>
       </p>
       {showProgress && <ProgressBar currentStep={currentStep} />}

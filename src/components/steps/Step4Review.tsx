@@ -30,29 +30,29 @@ export function Step4Review({ data, onBack, onSend }: Step4ReviewProps) {
           className="absolute border border-[#e9e9e9] border-solid inset-0 pointer-events-none rounded-[14px]"
         />
         <div className="relative z-10">
-          <h2 className="font-['Instrument_Serif:Regular',sans-serif] text-[#27263e] text-[48px] mb-12 text-center">
+          <h2 className="font-['Instrument Serif',serif] text-[#27263e] text-[48px] mb-12 text-center">
             Review &amp; Send
           </h2>
 
           {/* Recipient Info - Centered */}
           <div className="mb-12 text-center">
-            <p className="font-['Instrument_Serif:Regular',sans-serif] text-[#787878] text-[16px] mb-2">
+            <p className="font-['Chivo',sans-serif] text-[#787878] text-[16px] mb-2">
               To:
             </p>
-            <p className="font-['Instrument_Serif:Regular',sans-serif] text-[#27263e] text-[24px] mb-1">
+            <p className="font-['Chivo',sans-serif] text-[#27263e] text-[24px] mb-1">
               {data.recipientName}
             </p>
-            <p className="font-['Instrument_Serif:Regular',sans-serif] text-[#27263e] text-[18px] mb-1">
+            <p className="font-['Chivo',sans-serif] text-[#27263e] text-[18px] mb-1">
               {data.recipientAddress}
             </p>
-            <p className="font-['Instrument_Serif:Regular',sans-serif] text-[#27263e] text-[18px]">
+            <p className="font-['Chivo',sans-serif] text-[#27263e] text-[18px]">
               {data.recipientCity}
             </p>
           </div>
 
           {/* Letter Preview with Stickers */}
           <div className="mb-12">
-            <p className="font-['Instrument_Serif:Regular',sans-serif] text-[#787878] text-[18px] mb-6 text-center">
+            <p className="font-['Chivo',sans-serif] text-[#787878] text-[18px] mb-6 text-center">
               Letter Preview:
             </p>
             <div className="flex justify-center">
@@ -112,13 +112,13 @@ export function Step4Review({ data, onBack, onSend }: Step4ReviewProps) {
           <div className="flex justify-between mt-12">
             <button
               onClick={onBack}
-              className="bg-gray-200 text-[#27263e] px-8 py-3 rounded-lg font-['Instrument_Serif:Regular',sans-serif] text-[20px] flex items-center gap-2 hover:bg-gray-300 transition-colors"
+              className="bg-gray-200 text-[#27263e] px-8 py-3 rounded-lg font-['Chivo',sans-serif] text-[20px] flex items-center gap-2 hover:bg-gray-300 transition-colors"
             >
               <ArrowLeft className="w-5 h-5" /> Back
             </button>
             <button
               onClick={onSend}
-              className="bg-[#3ea7c1] text-white px-8 py-3 rounded-lg font-['Instrument_Serif:Regular',sans-serif] text-[20px] flex items-center gap-2 hover:bg-[#3598ab] transition-colors"
+              className="bg-[#3ea7c1] text-white px-8 py-3 rounded-lg font-['Chivo',sans-serif] text-[20px] flex items-center gap-2 hover:bg-[#3598ab] transition-colors"
             >
               <Send className="w-5 h-5" /> Send Letter
             </button>
