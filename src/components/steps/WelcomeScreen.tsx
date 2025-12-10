@@ -21,7 +21,7 @@ export function WelcomeScreen({ onStart }: WelcomeScreenProps) {
           </p>
           <button
             onClick={onStart}
-            className="bg-[#3ea7c1] box-border content-stretch flex gap-[10px] items-center justify-center px-[60px] py-[10px] rounded-[8px] cursor-pointer hover:bg-[#3598ab] transition-colors mx-auto"
+            className="bg-[#3ea7c1] box-border content-stretch flex gap-[10px] items-center justify-center px-[60px] py-[10px] rounded-[8px] cursor-pointer hover:bg-[#3598ab] transition-colors mx-auto mb-8"
           >
             <p className="font-['Chivo',sans-serif] font-normal leading-[normal] relative shrink-0 text-[24px] text-nowrap text-white whitespace-pre">
               Start
