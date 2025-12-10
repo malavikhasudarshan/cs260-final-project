@@ -354,7 +354,7 @@ export function Step2WriteAndStickers({
         <div className="w-2/3 flex flex-col items-stretch justify-start p-8">
           <div className="w-full">
             <div className="mb-4">
-              <h2 className="font-['Instrument_Serif',serif] text-[48px] text-[#27263e] mb-2">
+              <h2 className="font-['Instrument Serif',serif] text-[48px] text-[#27263e] mb-2">
                 Write & decorate your letter
               </h2>
               <p className="font-['Chivo',sans-serif] text-[16px] text-[#787878]">
@@ -529,7 +529,7 @@ export function Step2WriteAndStickers({
                 {/* Drop zone hint */}
                 {stickers.length === 0 && !data.message.trim() && (
                   <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                    <p className="font-['Chivo',sans-serif] text-[#9ac7d3] text-center px-4 text-[18px]">
+                    <p className="font-['Chivo',sans-serif] text-[#9acs7d3] text-center px-12 text-[18px]">
                       Start typing your letter, then drag stickers from the right panel into this box
                     </p>
                   </div>

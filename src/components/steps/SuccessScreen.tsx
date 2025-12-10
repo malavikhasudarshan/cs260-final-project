@@ -18,18 +18,18 @@ export function SuccessScreen({ onReset }: SuccessScreenProps) {
             <div className="w-24 h-24 bg-[#3ea7c1] rounded-full flex items-center justify-center">
               <Send className="w-12 h-12 text-white" />
             </div>
-            <p className="font-['Instrument_Serif:Regular',sans-serif] leading-[normal] not-italic text-[#27263e] text-[64px] text-nowrap whitespace-pre">
+            <p className="font-['Instrument Serif',serif] leading-[normal] not-italic text-[#27263e] text-[64px] text-nowrap whitespace-pre">
               Letter Sent!
             </p>
           </div>
-          <p className="font-['Chivo:Regular',sans-serif] font-normal leading-[normal] text-[#27263e] text-[22px] text-nowrap whitespace-pre mb-8">
+          <p className="font-['Chivo',sans-serif] font-normal leading-[normal] text-[#27263e] text-[22px] text-nowrap whitespace-pre mb-8">
             Your letter is on its way to your loved one.
           </p>
           <button
             onClick={onReset}
             className="bg-[#3ea7c1] box-border content-stretch flex gap-[10px] items-center justify-center px-[60px] py-[10px] rounded-[8px] cursor-pointer hover:bg-[#3598ab] transition-colors mx-auto"
           >
-            <p className="font-['Chivo:Regular',sans-serif] font-normal leading-[normal] relative shrink-0 text-[24px] text-nowrap text-white whitespace-pre">
+            <p className="font-['Chivo',sans-serif] font-normal leading-[normal] relative shrink-0 text-[24px] text-nowrap text-white whitespace-pre">
               Create Another
             </p>
           </button>
